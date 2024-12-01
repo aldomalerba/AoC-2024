@@ -1,11 +1,12 @@
 import kotlin.math.abs
 
-fun main() {
+class Day01 {
 
-    fun day01Parser(input: List<String>) = input.map {
+    private fun day01Parser(input: List<String>) = input.map {
         val parts = it.split(" ")
         Pair(parts.first().toInt(), parts.last().toInt())
     }.unzip()
+
 
     fun part1(input: List<String>): Int {
         val (leftSide, rightSide) = day01Parser(input)
@@ -23,12 +24,12 @@ fun main() {
         return scores.sum()
     }
 
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 11)
-    check(part2(testInput) == 31)
+}
+fun main() {
 
+    val day01 = Day01()
 
     val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+    day01.part1(input).println()
+    day01.part2(input).println()
 }
