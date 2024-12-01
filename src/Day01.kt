@@ -10,13 +10,9 @@ fun main() {
     fun part1(input: List<String>): Int {
         val (leftSide, rightSide) = day01Parser(input)
 
-        val leftSideSorted = leftSide.sorted()
-        val rightSideSorted = rightSide.sorted()
+        val pairs = leftSide.sorted().zip(rightSide.sorted())
+        val sizes = pairs.map { pair -> abs(pair.first - pair.second) }
 
-        val sizes = leftSideSorted.mapIndexed { index, left ->
-            val right = rightSideSorted[index]
-            abs(left - right)
-        }
         return sizes.sum()
     }
 
