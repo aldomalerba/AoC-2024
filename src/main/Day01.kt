@@ -2,14 +2,14 @@ import kotlin.math.abs
 
 class Day01 {
 
-    private fun day01Parser(input: List<String>) = input.map {
-        val parts = it.split(" ")
-        Pair(parts.first().toInt(), parts.last().toInt())
+    private fun inputParser(input: List<String>) = input.map {
+        val (left, right) = it.split(" ")
+        left.toInt() to right.toInt()
     }.unzip()
 
 
     fun part1(input: List<String>): Int {
-        val (leftSide, rightSide) = day01Parser(input)
+        val (leftSide, rightSide) = inputParser(input)
 
         val pairs = leftSide.sorted().zip(rightSide.sorted())
         val sizes = pairs.map { pair -> abs(pair.first - pair.second) }
@@ -18,7 +18,7 @@ class Day01 {
     }
 
     fun part2(input: List<String>): Int {
-        val (firstSide, secondSide) = day01Parser(input)
+        val (firstSide, secondSide) = inputParser(input)
 
         val scores = firstSide.map { left -> secondSide.count { it == left} * left }
         return scores.sum()
