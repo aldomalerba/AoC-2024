@@ -3,7 +3,7 @@ import kotlin.math.abs
 class Day01 {
 
     private fun inputParser(input: List<String>) = input.map {
-        val (left, right) = it.split(" ")
+        val (left, right) = it.split(" ").filter { it != "" }
         left.toInt() to right.toInt()
     }.unzip()
 
