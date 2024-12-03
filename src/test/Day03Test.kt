@@ -13,6 +13,36 @@ class Day03Test {
     }
 
     @Test
+    fun `extract correct instructions with enabler`() {
+        val curruptedInput = "xmul(87,12)%&do()?mul(8,5)"
+
+        val result = instructionsWithEnablers(curruptedInput)
+
+        assertEquals(listOf("mul(87,12)", "do()", "mul(8,5)"), result)
+    }
+
+
+    @Test
+    fun `filter disabled instructions`() {
+        val curruptedInput = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
+
+        val instructions = instructionsWithEnablers(curruptedInput)
+        val result = getEnabledInstructions(instructions)
+
+        assertEquals(listOf("mul(2,4)", "mul(8,5)"), result)
+    }
+
+    @Test
+    fun `extract correct instructions with disabler`() {
+        val curruptedInput = "xmul(87,12)%&don't()?mul(8,5)"
+
+        val result = instructionsWithEnablers(curruptedInput)
+
+        assertEquals(listOf("mul(87,12)", "don't()", "mul(8,5)"), result)
+    }
+
+
+    @Test
     fun `execute instruction`() {
         val instruction = "mul(2,4)"
 
@@ -30,6 +60,17 @@ class Day03Test {
         val result = day03.part1(listOf(instruction))
 
         assertEquals( 161, result)
+    }
+
+
+    @Test
+    fun `Day03 part 2`() {
+        val day03 = Day03()
+        val instruction = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
+
+        val result = day03.part2(listOf(instruction))
+
+        assertEquals( 48, result)
     }
 
 }
