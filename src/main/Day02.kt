@@ -39,7 +39,7 @@ class Report(private val levels: List<Int>) {
 
 }
 
-class Day02 {
+class Day02: Day {
 
     private fun parseInput(input: List<String>, tolerate: Int) = input.map {
         val report = Report(it.split(" ").map(String::toInt))
@@ -47,13 +47,13 @@ class Day02 {
         report
     }
 
-    fun part1(input: List<String>): Int {
+    override fun part1(input: List<String>): Int {
         val reports = parseInput(input, 0)
         return countSafeReports(reports)
     }
 
 
-    fun part2(input: List<String>): Int {
+    override fun part2(input: List<String>): Int {
         val reports = parseInput(input, 1)
         return countSafeReports(reports)
     }

@@ -1,6 +1,7 @@
 import kotlin.math.abs
 
-class Day01 {
+
+class Day01 : Day {
 
     private fun inputParser(input: List<String>) = input.map {
         val (left, right) = it.split(" ").filter { it != "" }
@@ -8,7 +9,7 @@ class Day01 {
     }.unzip()
 
 
-    fun part1(input: List<String>): Int {
+    override fun part1(input: List<String>): Int {
         val (leftSide, rightSide) = inputParser(input)
 
         val pairs = leftSide.sorted().zip(rightSide.sorted())
@@ -17,7 +18,7 @@ class Day01 {
         return sizes.sum()
     }
 
-    fun part2(input: List<String>): Int {
+    override fun part2(input: List<String>): Int {
         val (firstSide, secondSide) = inputParser(input)
 
         val scores = firstSide.map { left -> secondSide.count { it == left} * left }

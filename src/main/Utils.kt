@@ -3,6 +3,11 @@ import java.security.MessageDigest
 import kotlin.io.path.Path
 import kotlin.io.path.readText
 
+interface Day {
+    fun part1(input: List<String>): Int
+    fun part2(input: List<String>): Int
+}
+
 /**
  * Reads lines from the given input txt file.
  */
