@@ -16,8 +16,7 @@ class Day06: Day {
         }
 
         val guard = Guard('^', guardPosition.first, guardPosition.second, obstacles)
-        val predictor = GuardPositionsPredictor(mapLength, mapHeight, guard)
-        val visitedPositions = predictor.execute()
+        val visitedPositions = preditctPositions(mapLength, mapHeight, guard)
 
         return visitedPositions.size
     }
@@ -39,14 +38,14 @@ class Day06: Day {
         var stuckCount = 0
 
         val guard = Guard('^', guardPosition.first, guardPosition.second, obstacles)
-        val predictor = GuardPositionsPredictor(mapLength, mapHeight, guard)
-        val paths = predictor.execute()
+        val paths = preditctPositions(mapLength, mapHeight, guard)
 
         for (position in paths) {
             try {
-                val guard = Guard('^', guardPosition.first, guardPosition.second, obstacles + position)
-                val predictor = GuardPositionsPredictor(mapLength, mapHeight, guard)
-                predictor.execute()
+                guard.obstacles = obstacles
+                guard.obstacles = obstacles + position
+                guard.reset('^', guardPosition.first, guardPosition.second)
+                preditctPositions(mapLength, mapHeight, guard)
             }catch (e: GuardStuckException) {
                 stuckCount++
             }
@@ -63,10 +62,15 @@ fun main() {
 
     val input = readInput("Day06")
     day06.part1(input).println()
+
+    val startTime = System.currentTimeMillis()
     day06.part2(input).println()
+    val endTime = System.currentTimeMillis()
+    val elapsedTimeInSeconds = (endTime - startTime) / 1000.0
+    println("Tempo di esecuzione: $elapsedTimeInSeconds secondi")
 }
 
-class Guard(facing: Char, x: Int, y: Int,val obstacles: List<Pair<Int,Int>> = emptyList()) {
+class Guard(facing: Char, x: Int, y: Int, var obstacles: List<Pair<Int,Int>> = emptyList()) {
     private val turnRules = mapOf('^' to '>', '>' to 'v', 'v' to '<', '<' to '^')
 
     private var x = x
@@ -102,15 +106,20 @@ class Guard(facing: Char, x: Int, y: Int,val obstacles: List<Pair<Int,Int>> = em
         }
     }
 
+    fun reset(resetFacing: Char, resetX: Int, resetY: Int,) {
+        this.orientation = resetFacing
+        this.x = resetX
+        this.y = resetY
+    }
+
 }
 
 
-class GuardPositionsPredictor(private val mapLenght: Int, private val mapHeight: Int, val guard: Guard) {
+fun preditctPositions(mapLenght: Int,mapHeight: Int, guard: Guard): Set<Pair<Int, Int>> {
 
-    private var setPositions = mutableSetOf(guard.position())
-    private val allPositions = mutableListOf(guard.position())
+        var setPositions = mutableSetOf(guard.position())
+        val allPositions = mutableListOf(guard.position())
 
-    fun execute(): Set<Pair<Int, Int>> {
         var outside = false
         while (!outside){
             val prevPosition = guard.position()
@@ -131,6 +140,4 @@ class GuardPositionsPredictor(private val mapLenght: Int, private val mapHeight:
         }
 
         return setPositions
-    }
-
 }

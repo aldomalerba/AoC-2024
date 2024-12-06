@@ -21,6 +21,7 @@ class Day06Test {
         """.trimIndent().split("\n")
 
         assertThrows<GuardStuckException> { day06.part1(input) }
+
     }
 
 
