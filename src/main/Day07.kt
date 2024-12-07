@@ -1,75 +1,43 @@
 class Day07{
     fun part1(input: List<String>): Long {
-        val combinationsGenerator = CombinationsGenerator(listOf("+","*"))
-        return input.map { parseEquation(it) }
-            .filter { allPossibleResults(it.second, combinationsGenerator).contains(it.first) }
+        val operations = listOf("+","*")
+        return input.map(String::toEquation)
+            .filter { it.containsValidCombination(operations) }
             .sumOf { it.first }
     }
 
     fun part2(input: List<String>): Long {
-        val combinationsGenerator = CombinationsGenerator(listOf("+","*","||"))
-        return input.map { parseEquation(it) }
-            .filter { allPossibleResults(it.second, combinationsGenerator).contains(it.first) }
+        val operations = listOf("+","*","||")
+        return input.map(String::toEquation)
+            .filter { it.containsValidCombination(operations) }
             .sumOf { it.first }
     }
 
-}
-
-fun parseEquation(input: String): Pair<Long, List<Int>> {
-    val (test, nums) = input.split(": ")
-    return test.toLong() to nums.split(" ").map(String::toInt)
-}
-
-fun allPossibleResults(nums: List<Int>, generator: CombinationsGenerator): List<Long> {
-    val opCombinations = generator.combinations(nums.size - 1)
-    val allResults = mutableListOf<Long>()
-
-    for (ops in opCombinations) {
-        var res: Long = nums[0].toLong()
-        ops.forEachIndexed { index, op ->
-            when (op) {
-                "+" -> res += nums[index + 1]
-                "||" -> res = "$res${nums[index + 1]}".toLong()
-                else -> res *= nums[index + 1]
-            }
-        }
-
-        allResults.add(res)
+    private fun Pair<Long, List<Long>>.containsValidCombination(operations: List<String>): Boolean {
+        val (test, nums) = this
+        return operations.any { isValidRecursive(test to nums.drop(1), operations, it, nums.first()) }
     }
 
-    return allResults
+    private fun isValidRecursive(equation: Pair<Long, List<Long>>, operations: List<String>, op: String ,sum: Long = 0L): Boolean {
+        val (test, nums) = equation
+        if(sum == test) return true;
+        if(nums.isEmpty() || sum > test) return false
+
+        val first = equation.second.first()
+        val res = when (op) {
+            "+" -> sum + first
+            "||" -> "$sum${first}".toLong()
+            else -> sum * first
+        }
+
+        return operations.any { isValidRecursive(test to nums.drop(1), operations, it, res) }
+    }
+
 }
 
-class CombinationsGenerator(val values: List<String>) {
-
-    private val inMemoryCombinations: MutableMap<Int,List<List<String>>> = mutableMapOf()
-
-    fun combinations(length: Int): List<List<String>> {
-        if(inMemoryCombinations.containsKey(length)) return inMemoryCombinations[length]!!
-        val combinations = mutableListOf<List<String>>()
-        combinations.addAll(generateCombination(length, emptyList()))
-
-        inMemoryCombinations[length] = combinations
-
-        return combinations
-
-    }
-
-    private fun generateCombination(length: Int, combination: List<String>):  List<List<String>>{
-        val combinations = mutableListOf<List<String>>()
-        if(length == 0) return combinations
-
-        if(combination.size == length) {
-            combinations.add(combination)
-            return combinations
-        }
-
-        for(op in values) {
-            combinations.addAll(generateCombination(length, combination + op))
-        }
-
-        return combinations
-    }
+fun String.toEquation(): Pair<Long, List<Long>> {
+    val (test, nums) = this.split(": ")
+    return test.toLong() to nums.split(" ").map(String::toLong)
 }
 
 fun main() {
