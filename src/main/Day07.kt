@@ -42,10 +42,14 @@ fun allPossibleResults(nums: List<Int>, generator: CombinationsGenerator): List<
 
 class CombinationsGenerator(val values: List<String>) {
 
-    fun combinations(length: Int): List<List<String>> {
-        val combinations = mutableListOf<List<String>>()
+    private val inMemoryCombinations: MutableMap<Int,List<List<String>>> = mutableMapOf()
 
+    fun combinations(length: Int): List<List<String>> {
+        if(inMemoryCombinations.containsKey(length)) return inMemoryCombinations[length]!!
+        val combinations = mutableListOf<List<String>>()
         combinations.addAll(generateCombination(length, emptyList()))
+
+        inMemoryCombinations[length] = combinations
 
         return combinations
 
