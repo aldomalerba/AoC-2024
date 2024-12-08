@@ -43,7 +43,7 @@ class Day07Test {
     @Test
     fun `parse an equation`() {
         val equation = "7290: 6 8 6 15".toEquation()
-        assertEquals(Pair(7290L, listOf(6, 8, 6, 15)), equation)
+        assertEquals(Pair(7290L, listOf(6L, 8L, 6L, 15L)), equation)
     }
 
 }
