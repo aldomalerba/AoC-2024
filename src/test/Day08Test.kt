@@ -6,36 +6,21 @@ class Day08Test {
     fun `given two antennas returns two antinodes`() {
         val antennas = listOf(4 to 3, 5 to 5)
 
-        assertEquals(listOf(3 to 1, 6 to 7), antinodes(antennas))
+        assertEquals(listOf(3 to 1, 6 to 7), antinodes(antennas, 8,8, false))
     }
 
     @Test
     fun `given three antennas returns all antinodes extended`() {
         val antennas = listOf(0 to 0, 3 to 1)
 
-        assertEquals(listOf(0 to 0, 3 to 1, -3 to - 1, 6 to 2, 9 to 3, 12 to 4), antinodesExtended(antennas, length = 10, height = 10))
-    }
-
-
-    @Test
-    fun `given two antennas returns two antinodes diff`() {
-        val antennas = listOf(5 to 5, 8 to 4)
-
-        assertEquals(listOf(2 to 6, 11 to 3), antinodes(antennas))
-    }
-
-    @Test
-    fun `given two antennas returns two antinodes diff 2`() {
-        val antennas = listOf(4 to 3, 8 to 4)
-
-        assertEquals(listOf(0 to 2, 12 to 5), antinodes(antennas))
+        assertEquals(listOf(0 to 0, 3 to 1, 6 to 2, 9 to 3), antinodes(antennas, length = 10, height = 10, true))
     }
 
     @Test
     fun `given three antennas returns all possible antinodes`() {
         val antennas = listOf(4 to 3, 5 to 5, 8 to 4)
 
-        assertEquals(listOf(3 to 1, 6 to 7, 0 to 2, 12 to 5, 2 to 6, 11 to 3), antinodes(antennas))
+        assertEquals(listOf(3 to 1, 6 to 7, 0 to 2, 2 to 6), antinodes(antennas, 11, 11, false))
     }
 
     @Test
